@@ -1,4 +1,4 @@
-* Docker ros image creation
+## Docker ros image creation
 
 Let's start with the latest ros-indigo image from dockerHub :
 
@@ -8,14 +8,14 @@ Then install essential build tools (need g++ and updated versions of cmake) :
 
   sudo apt-get update && sudo apt-get install build-essential
 
-* Installing velodyne nodes
-  * Required ros packets :
+## Installing velodyne nodes
+  #### Required ros packets :
       * diagnostic-updater
       * angles
-  * Required libraries :
+  #### Required libraries :
       * libyaml-cpp-dev
       * libpcap-dev
-      
+
 sudo apt-get install ros-indigo-diagnostic-updater
 sudo apt-get install ros-indigo-angles
 sudo apt-get install libyaml-cpp-dev
