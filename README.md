@@ -9,23 +9,32 @@ Then install essential build tools (need g++ and updated versions of cmake) :
   sudo apt-get update && sudo apt-get install build-essential
 ```
 ## Installing velodyne nodes
-#### Required ros packets :
-      * diagnostic-updater
-      * angles
-#### Required libraries :
-      * libyaml-cpp-dev
-      * libpcap-dev
-
+Velodyne is a collection of ROS packages supporting Velodyne high definition 3D LIDARs. They produce a ROS Topic '/velodyne_pointcloud' of [PointCloud2](http://docs.ros.org/api/sensor_msgs/html/msg/PointCloud2.html) type containning
+Updated wiki can be found here :http://ros.org/wiki/velodyne
+#### Required ros packages :
+* diagnostic-updater
+```
 sudo apt-get install ros-indigo-diagnostic-updater
+```
+* angles
+```
 sudo apt-get install ros-indigo-angles
+```
+#### Required libraries :
+* libyaml-cpp-dev
+```
 sudo apt-get install libyaml-cpp-dev
+```
+* libpcap-dev
+```
 sudo apt-get install libpcap-dev
+```
 
-in catkin_ws/src/
-
+### Velodyne nodes
+in 'catkin_ws/src/'
+```
 git clone https://github.com/ros-drivers/velodyne.git
-
-Then install essential build tools (need g++ and updated versions of cmake) :
+```
 
 git clone https://bitbucket.org/gtborg/gtsam.git
 cd gtsam
@@ -46,11 +55,6 @@ cd catkin_ws/
 mkdir src
 cd src/
 catkin_init_workspace
-
-sudo apt-get install ros-indigo-diagnostic-updater
-sudo apt-get install ros-indigo-angles
-sudo apt-get install libyaml-cpp-dev
-sudo apt-get install libpcap-dev
 
 in catkin_ws/src/
 
