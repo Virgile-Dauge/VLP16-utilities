@@ -8,7 +8,6 @@
   - [ ] Find a way to Give acces to the VLP16 from the container
   - [ ] Test BLAM with the direct sensor data stream
 
-
 ## Docker ros image creation
 
 Let's start with the latest ros-indigo image from dockerHub :
@@ -18,6 +17,23 @@ Let's start with the latest ros-indigo image from dockerHub :
 Then install essential build tools (need g++ and updated versions of cmake) :
 ```
   sudo apt-get update && sudo apt-get install build-essential
+```
+##Docker commit
+```
+docker commit -a "virgile" -m "message" CONTAINER [REPOSITORY[:TAG]]
+```
+##Docker cleannup
+Remove all stopped containers
+```
+docker rm -v $(docker ps -a -q -f status=exited)
+```
+Remove unwanted ‘dangling’ images
+```
+docker rmi $(docker images -f "dangling=true" -q)
+```
+Remove volumes
+```
+docker volume rm $(docker volume ls -qf dangling=true)
 ```
 ## Installing velodyne nodes
 Velodyne is a collection of ROS packages supporting Velodyne high definition 3D LIDARs. They produce a ROS Topic '/velodyne_points' of [PointCloud2](http://docs.ros.org/api/sensor_msgs/html/msg/PointCloud2.html) type containning
@@ -120,6 +136,7 @@ docker run -it --rm --net foo --name master --ip 192.168.1.77 virgiletn/ros-indi
 #Docker encapsulation
 ###Allowing GUI display
 Needed for using any graphical tool.
+If you want to run it with your current USER
 ```
 --user=$(id -u)  \
 --env="DISPLAY" \
@@ -129,3 +146,63 @@ Needed for using any graphical tool.
 --volume="/etc/shadow:/etc/shadow:ro" \
 --volume="/etc/sudoers.d:/etc/sudoers.d:ro" \ --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
 ```
+Simple way :
+```
+--env="DISPLAY" \
+--env="QT_X11_NO_MITSHM=1" \
+--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+```
+but you need to allow acces to yout host Xserver
+```
+xhost +local:root
+```
+(not safe) OR
+```
+export containerId=$(docker ps -l -q)
+xhost +local:`docker inspect --format='{{ .Config.Hostname }}' $containerId`
+docker start $containerId
+```
+
+docker run -it \
+--rm \
+--net foo \
+--name dataAnalyst \
+--env ROS_HOSTNAME=dataAnalyst \
+--env ROS_MASTER_URI=http://master:11311 \
+--env="DISPLAY" \
+--env="QT_X11_NO_MITSHM=1" \
+--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+--device=/dev/dri:/dev/dri \
+virgiletn/ros-indigo:rviz bash
+
+docker run -it \
+--rm \
+--env="DISPLAY" \
+--env="QT_X11_NO_MITSHM=1" \
+--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+ros-rviz bash
+
+
+##Enabling Graphical Acceleration.
+###Installing nvidia-docker
+# Install nvidia-docker and nvidia-docker-plugin
+```
+wget -P /tmp https://github.com/NVIDIA/nvidia-docker/releases/download/v1.0.0/nvidia-docker_1.0.0-1_amd64.deb
+sudo dpkg -i /tmp/nvidia-docker*.deb && rm /tmp/nvidia-docker*.deb
+sudo apt-get install nvidia-modprobe
+```
+# Test nvidia-smi
+```
+nvidia-docker run --rm nvidia/cuda nvidia-smi
+```
+Checking glx on host :
+```
+glxgear
+```
+nvidia-docker run -it \
+    --env="DISPLAY" \
+    --env="QT_X11_NO_MITSHM=1" \
+    --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+    --env="LIBGL_ALWAYS_INDIRECT=0" \
+    ros-rviz \
+    bash -c "roscore & rosrun rviz rviz"
