@@ -1,0 +1,25 @@
+# ROS RVIZ
+ros-rviz:
+  #build: ros-rviz/.
+  image: toddsampson/ros-indigo-rviz
+  container_name: rviz
+  hostname: rviz
+  net: rosdocker
+  volumes:
+    - "/tmp/.X11-unix:/tmp/.X11-unix"
+  environment:
+      - "DISPLAY=$DISPLAY"
+      - "QT_X11_NO_MITSHM=1"
+      - "ROS_HOSTNAME=rviz"
+      - "ROS_MASTER_URI=http://rosmaster:11311"
+  command: rosrun rviz rviz
+
+# ROS MASTER (ROSCORE)
+rosmaster:
+  image: ros:latest
+  container_name: rosmaster
+  hostname: rosmaster
+  net: rosdocker
+  ports:
+       - "11311:11311"
+  command: roscore

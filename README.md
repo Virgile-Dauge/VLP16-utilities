@@ -4,6 +4,7 @@
   - [x] Build ros-indigo docker image
   - [x] Install BLAM and it's requirements on it
   - [x] Allowing acces to host X server
+  - [x] Allowing acces to graphic card from container (NVIDIA)
   - [ ] Testing BLAM offline (with a pre-recorded rosbag)
   - [ ] Find a way to Give acces to the VLP16 from the container
   - [ ] Test BLAM with the direct sensor data stream
@@ -34,6 +35,10 @@ docker rmi $(docker images -f "dangling=true" -q)
 Remove volumes
 ```
 docker volume rm $(docker volume ls -qf dangling=true)
+```
+##Docker build
+```
+docker tag 7d9495d03763 maryatdocker/docker-whale:latest
 ```
 ## Installing velodyne nodes
 Velodyne is a collection of ROS packages supporting Velodyne high definition 3D LIDARs. They produce a ROS Topic '/velodyne_points' of [PointCloud2](http://docs.ros.org/api/sensor_msgs/html/msg/PointCloud2.html) type containning
@@ -75,7 +80,7 @@ git clone https://github.com/erik-nelson/blam.git
 sudo apt-get install libeigen3-dev
 sudo apt-get install ros-indigo-pcl-ros
 
-cd blam
+cd blam/
 ./update
 
 mkdir catkin_ws
@@ -206,3 +211,28 @@ nvidia-docker run -it \
     --env="LIBGL_ALWAYS_INDIRECT=0" \
     ros-rviz \
     bash -c "roscore & rosrun rviz rviz"
+
+    nvidia-docker run -it \
+        --env="DISPLAY" \
+        --env="QT_X11_NO_MITSHM=1" \
+        --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+        --env="LIBGL_ALWAYS_INDIRECT=0" \
+        virgiletn/ros-indigo:nvidia \
+        bash -c "roscore & rosrun rviz rviz"
+
+        nvidia-docker run -it \
+            --env="DISPLAY" \
+            --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+            virgiletn/ros-indigo:nvidia \
+            bash -c "roscore & rosrun rviz rviz"
+
+            nvidia-docker run -it \
+            --rm \
+            --net foo \
+            --name viewer \
+            --env ROS_HOSTNAME=viewer \
+            --env ROS_MASTER_URI=http://master:11311 \
+                --env="DISPLAY" \
+                --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+                virgiletn/ros-indigo-rviz:nvidia \
+                bash
