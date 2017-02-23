@@ -47,9 +47,6 @@ catkin_init_workspace
 
 in catkin_ws/src/
 
-
-roslaunch velodyne_pointcloud VLP16_points.launch calibration:=/home/virgile/vlp16cf.yaml
-
 sudo docker exec -i -t berserk_yalow /bin/bash
 docker network create foo
 
