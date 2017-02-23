@@ -5,9 +5,9 @@
   - [x] Install BLAM and it's requirements on it
   - [x] Allowing acces to host X server
   - [x] Allowing acces to graphic card from container (NVIDIA)
-  - [ ] Testing BLAM offline (with a pre-recorded rosbag)
-  - [ ] Find a way to Give acces to the VLP16 from the container
-  - [ ] Test BLAM with the direct sensor data stream
+  - [x] Testing BLAM offline (with a pre-recorded rosbag)
+  - [x] Find a way to Give acces to the VLP16 from the container
+  - [x] Test BLAM with the direct sensor data stream
 
 ## Docker ros image creation
 
@@ -68,25 +68,9 @@ in 'catkin_ws/src/'
 git clone https://github.com/ros-drivers/velodyne.git
 ```
 
-##Intalling BLAM
-git clone https://bitbucket.org/gtborg/gtsam.git
-cd gtsam
-mkdir build
-cmake ..
-make install
+mkdir -p catkin_ws/src/
+cd catkin_ws/src/
 
-git clone https://github.com/erik-nelson/blam.git
-
-sudo apt-get install libeigen3-dev
-sudo apt-get install ros-indigo-pcl-ros
-
-cd blam/
-./update
-
-mkdir catkin_ws
-cd catkin_ws/
-mkdir src
-cd src/
 catkin_init_workspace
 
 in catkin_ws/src/
@@ -228,11 +212,11 @@ nvidia-docker run -it \
 
             nvidia-docker run -it \
             --rm \
-            --net foo \
-            --name viewer \
-            --env ROS_HOSTNAME=viewer \
-            --env ROS_MASTER_URI=http://master:11311 \
+            --net host \
+            --name blam \
+            --env ROS_HOSTNAME=coucou \
+            --env ROS_MASTER_URI=http://coucou:11311 \
                 --env="DISPLAY" \
                 --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
-                virgiletn/ros-indigo-rviz:nvidia \
-                bash
+                virgiletn/ros-indigo-blam \
+                roscore
