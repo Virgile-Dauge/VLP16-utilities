@@ -45,8 +45,6 @@ cd catkin_ws/src/
 
 catkin_init_workspace
 
-in catkin_ws/src/
-
 sudo docker exec -i -t berserk_yalow /bin/bash
 docker network create foo
 
@@ -66,8 +64,6 @@ docker run -it \
  virgiletn/ros-indigo bash
 
 cd home/workspace/catkin_ws/ && source devel/setup.bash
-
-roslaunch velodyne_pointcloud VLP16_points.launch calibration:=/home/workspace/vlp16cf.yaml
 
 docker run -it \
 --rm \
