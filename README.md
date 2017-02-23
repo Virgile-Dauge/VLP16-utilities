@@ -62,11 +62,6 @@ sudo apt-get install libyaml-cpp-dev
 sudo apt-get install libpcap-dev
 ```
 
-### Velodyne nodes
-in 'catkin_ws/src/'
-```
-git clone https://github.com/ros-drivers/velodyne.git
-```
 
 mkdir -p catkin_ws/src/
 cd catkin_ws/src/
@@ -75,7 +70,6 @@ catkin_init_workspace
 
 in catkin_ws/src/
 
-git clone https://github.com/ros-drivers/velodyne.git
 
 roslaunch velodyne_pointcloud VLP16_points.launch calibration:=/home/virgile/vlp16cf.yaml
 
