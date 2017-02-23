@@ -40,29 +40,6 @@ docker volume rm $(docker volume ls -qf dangling=true)
 ```
 docker tag 7d9495d03763 maryatdocker/docker-whale:latest
 ```
-## Installing velodyne nodes
-Velodyne is a collection of ROS packages supporting Velodyne high definition 3D LIDARs. They produce a ROS Topic '/velodyne_points' of [PointCloud2](http://docs.ros.org/api/sensor_msgs/html/msg/PointCloud2.html) type containning
-Updated wiki can be found here : http://ros.org/wiki/velodyne
-#### Required ros packages :
-* diagnostic-updater
-```
-sudo apt-get install ros-indigo-diagnostic-updater
-```
-* angles
-```
-sudo apt-get install ros-indigo-angles
-```
-#### Required libraries :
-* libyaml-cpp-dev
-```
-sudo apt-get install libyaml-cpp-dev
-```
-* libpcap-dev
-```
-sudo apt-get install libpcap-dev
-```
-
-
 mkdir -p catkin_ws/src/
 cd catkin_ws/src/
 
