@@ -9,15 +9,11 @@
   - [x] Find a way to Give acces to the VLP16 from the container
   - [x] Test BLAM with the direct sensor data stream
 
-## Docker ros image creation
-
+#Docker essentials
+##docker run
 Let's start with the latest ros-indigo image from dockerHub :
 ```
   docker run -it ros:indigo
-```
-Then install essential build tools (need g++ and updated versions of cmake) :
-```
-  sudo apt-get update && sudo apt-get install build-essential
 ```
 ##Docker commit
 ```
@@ -39,6 +35,10 @@ docker volume rm $(docker volume ls -qf dangling=true)
 ##Docker build
 ```
 docker tag 7d9495d03763 maryatdocker/docker-whale:latest
+```
+## Docker network
+```
+docker network create foo
 ```
 mkdir -p catkin_ws/src/
 cd catkin_ws/src/
