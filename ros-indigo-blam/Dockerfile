@@ -1,4 +1,4 @@
-FROM virgiletn/ros-indigo-gtsam:latest
+FROM virgiletn/indigo-gtsam:latest
 LABEL maintainer "virgile.dauge@inria.fr"
 
 USER root

@@ -1,4 +1,4 @@
-FROM virgiletn/ros-indigo-rviz:nvidia
+FROM virgiletn/indigo-ros-core
 LABEL maintainer "virgile.dauge@inria.fr"
 
 USER root
