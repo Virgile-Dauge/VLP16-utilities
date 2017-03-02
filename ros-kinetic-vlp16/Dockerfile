@@ -1,8 +1,6 @@
 FROM virgiletn/ros-kinetic:light
 LABEL maintainer "virgile.dauge@inria.fr"
 
-RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-
 RUN git clone \
         https://github.com/ros-drivers/velodyne.git \
         /home/catkin_ws/src/velodyne/
