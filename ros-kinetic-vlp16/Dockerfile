@@ -1,34 +1,17 @@
-FROM ros:kinetic-ros-core
+FROM virgiletn/ros-kinetic:light
 LABEL maintainer "virgile.dauge@inria.fr"
 
-# install ros packages
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    g++ \
-    #ros-kinetic-diagnostic-updater \
-    #ros-kinetic-angles \
-    #ros-kinetic-dynamic-reconfigure \
-    #ros-kinetic-nodelet \
-    ros-kinetic-desktop-full \
-    libyaml-cpp-dev \
-    libpcap-dev \
-&& rm -rf /var/lib/apt/lists/*
+RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 
-# add environment setup
-RUN bin/bash -c "echo 'source /opt/ros/kinetic/setup.bash' >> .bashrc"
+RUN git clone \
+        https://github.com/ros-drivers/velodyne.git \
+        /home/catkin_ws/src/velodyne/
 
-# Setup catkin workspace
-RUN /bin/bash -c "source /opt/ros/kinetic/setup.bash && \
-                  mkdir -p /home/catkin_ws/src && \
-                  cd /home/catkin_ws/src && \
-                  catkin_init_workspace && \
-                  cd /home/catkin_ws/ && \
-                  catkin_make && \
-                  echo 'source /home/catkin_ws/devel/setup.bash' >> /.bashrc"
-
-RUN bin/bash -c "source .bashrc"
-
-RUN git clone https://github.com/ros-drivers/velodyne.git /home/catkin_ws/src/velodyne/
+RUN apt-get -qq update \
+        && apt-get install -y \
+        sudo \
+        && rosdep install --as-root apt:yes -r --from-paths /home/catkin_ws/ --ignore-src --rosdistro kinetic -y \
+        && rm -rf /var/lib/apt/lists/*
 
 RUN /bin/bash -c "source /opt/ros/kinetic/setup.bash \
                   && cd /home/catkin_ws/ \
