@@ -12,12 +12,12 @@ RUN apt-get -qq update \
         && rm -rf /var/lib/apt/lists/*
 
 SHELL ["bin/bash", "-c"]
-RUN /bin/bash -c "source /opt/ros/kinetic/setup.bash \
-                  && cd /home/catkin_ws/ \
-                  && catkin_make"
+RUN source /opt/ros/kinetic/setup.bash \
+        && cd /home/catkin_ws/ \
+        && catkin_make
 
 ADD vlp16_calibration_file.yaml /home/
 
 CMD cd /home/catkin_ws \
-    && source devel/setup.bash \
-    && roslaunch velodyne_pointcloud VLP16_points.launch calibration:=/home/vlp16_calibration_file.yaml
+        && source devel/setup.bash \
+        && roslaunch velodyne_pointcloud VLP16_points.launch calibration:=/home/vlp16_calibration_file.yaml
