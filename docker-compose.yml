@@ -1,25 +1,21 @@
-# ROS RVIZ
-ros-rviz:
-  #build: ros-rviz/.
-  image: toddsampson/ros-indigo-rviz
-  container_name: rviz
-  hostname: rviz
-  net: rosdocker
-  volumes:
-    - "/tmp/.X11-unix:/tmp/.X11-unix"
-  environment:
-      - "DISPLAY=$DISPLAY"
-      - "QT_X11_NO_MITSHM=1"
-      - "ROS_HOSTNAME=rviz"
-      - "ROS_MASTER_URI=http://rosmaster:11311"
-  command: rosrun rviz rviz
-
-# ROS MASTER (ROSCORE)
-rosmaster:
-  image: ros:latest
-  container_name: rosmaster
-  hostname: rosmaster
-  net: rosdocker
-  ports:
-       - "11311:11311"
-  command: roscore
+version: '2'
+services:
+  rosmaster:
+      image: "ros:kinetic-ros-core"
+      container_name: rosmaster
+      hostname: rosmaster
+      ports:
+        - "11311:11311"
+      command:
+        -roscore
+  vlp:
+    image: "virgiletn/ros-kinetic-vlp16"
+    container_name: vlp
+    hostname: vlp
+    environment:
+        - "ROS_HOSTNAME=vlp"
+        - "ROS_MASTER_URI=http://rosmaster:11311"
+    command: rosrun $(roslaunch --args velodyne_pointcloud VLP16_points.launch calibration:=/home/vlp16_calibration_file.yaml)
+        # - /bin/bash -c "cd /home/catkin_ws/ \
+        #       && source devel/setup.bash \
+        #       && roslaunch velodyne_pointcloud VLP16_points.launch calibration:=/home/vlp16_calibration_file.yaml"
