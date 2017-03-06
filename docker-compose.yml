@@ -1,21 +1,14 @@
 version: '2'
 services:
   rosmaster:
-      image: "ros:kinetic-ros-core"
-      container_name: rosmaster
-      hostname: rosmaster
-      ports:
-        - "11311:11311"
-      command:
-        -roscore
+    image: "ros:kinetic-ros-core"
+    container_name: rosmaster
+    command:
+        - roscore
+
   vlp:
     image: "virgiletn/ros-kinetic-vlp16"
     container_name: vlp
-    hostname: vlp
     environment:
-        - "ROS_HOSTNAME=vlp"
-        - "ROS_MASTER_URI=http://rosmaster:11311"
-    command: rosrun $(roslaunch --args velodyne_pointcloud VLP16_points.launch calibration:=/home/vlp16_calibration_file.yaml)
-        # - /bin/bash -c "cd /home/catkin_ws/ \
-        #       && source devel/setup.bash \
-        #       && roslaunch velodyne_pointcloud VLP16_points.launch calibration:=/home/vlp16_calibration_file.yaml"
+        - "ROS_HOSTNAME=coucou"
+        - "ROS_MASTER_URI=http://coucou:11311"
