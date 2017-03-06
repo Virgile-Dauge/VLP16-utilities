@@ -22,7 +22,9 @@ RUN source /opt/ros/kinetic/setup.bash \
         && catkin_make
 
 #Adding The required calibration File from same directory as dockerfile
-ADD vlp16_calibration_file.yaml /home/
+#ADD vlp16_calibration_file.yaml /home/
+#Or Adding it directly from github (needed for automatic build)
+ADD https://raw.githubusercontent.com/virgileTN/VLP16-utilities/master/ros-kinetic-vlp16/vlp16_calibration_file.yaml /home/
 
 #Default command launching the node
 CMD cd /home/catkin_ws \
