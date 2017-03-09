@@ -5,13 +5,6 @@ LABEL maintainer "virgile.dauge@inria.fr"
 RUN apt-get update && apt-get install -y \
     build-essential \
     g++ \
-    #ros-kinetic-diagnostic-updater \
-    #ros-kinetic-angles \
-    #ros-kinetic-dynamic-reconfigure \
-    #ros-kinetic-nodelet \
-    #ros-kinetic-desktop-full \
-    #libyaml-cpp-dev \
-    #libpcap-dev \
 && rm -rf /var/lib/apt/lists/*
 
 # add environment setup
