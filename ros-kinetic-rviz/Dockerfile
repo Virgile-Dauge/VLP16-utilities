@@ -15,5 +15,4 @@ SHELL ["bin/bash", "-c"]
 
 #Default command launching the node
 CMD source /opt/ros/kinetic/setup.bash \
-        && roscore \
         && rosrun rviz rviz
