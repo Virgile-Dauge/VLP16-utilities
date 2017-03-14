@@ -12,7 +12,15 @@ if [[ "$ARCH" != "x86_64" ]]; then
 fi
 
 echo "Installing some required Ubuntu packages... (may ask password for sudo apt-get)"
-sudo apt-get install -y ros-kinetic-desktop-full git cmake python-tempita python-catkin-tools python-lxml default-jre >/dev/null
+sudo apt-get update \
+&& sudo apt-get install -y \
+ros-kinetic-desktop-full \
+git \
+cmake \
+python-tempita \
+python-catkin-tools \
+python-lxml \
+default-jre >/dev/null
 
 while true; do
 	read -p "Where do you want to install V-REP? [$HOME] " VREP_DESTDIR
